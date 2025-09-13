@@ -1,0 +1,943 @@
+/* Enhanced Professional Bike Store Styling */
+
+/* Bike Store Theme CSS Variables */
+:root {
+    /* Bike Store Brand Colors */
+    --bike-red: #dc2626;           /* Racing red */
+    --bike-orange: #ea580c;        /* KTM orange */
+    --bike-blue: #1d4ed8;          /* Yamaha blue */
+    --bike-green: #059669;         /* Kawasaki green */
+    --bike-black: #111827;         /* Carbon fiber black */
+    --bike-chrome: #e5e7eb;        /* Chrome/aluminum */
+    --bike-gold: #f59e0b;          /* Gold accents */
+    
+    /* Bike Theme Gradients */
+    --primary-gradient: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+    --secondary-gradient: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fb923c 100%);
+    --success-gradient: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+    --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #fcd34d 100%);
+    --danger-gradient: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+    --info-gradient: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #60a5fa 100%);
+    
+    /* Bike Store Environment Colors */
+    --bg-gradient-main: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    --bg-gradient-card: linear-gradient(145deg, #1e293b 0%, #334155 50%, #475569 100%);
+    --bg-gradient-dark: linear-gradient(135deg, #111827 0%, #1f2937 50%, #374151 100%);
+    
+    /* Chrome/Metal Effects (like bike frames) */
+    --glass-bg: rgba(30, 41, 59, 0.4);
+    --glass-border: rgba(156, 163, 175, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.5);
+    
+    /* Bike Light/Neon Effects */
+    --neon-red: #dc2626;
+    --neon-orange: #ea580c;
+    --neon-green: #059669;
+    --neon-blue: #1d4ed8;
+    --neon-gold: #f59e0b;
+    
+    /* Bike Component Colors */
+    --tire-black: #1f2937;
+    --spoke-silver: #9ca3af;
+    --gear-bronze: #92400e;
+    --chain-dark: #374151;
+    
+    /* Animation Timings (bike-inspired) */
+    --transition-fast: 0.2s ease-out;
+    --transition-normal: 0.3s ease-out;
+    --transition-slow: 0.5s ease-out;
+    --wheel-spin: 1s linear infinite;
+    --gear-turn: 2s ease-in-out infinite;
+    
+    /* Bike Store Shadows */
+    --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.2);
+    --shadow-md: 0 4px 6px rgba(15, 23, 42, 0.3);
+    --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.4);
+    --shadow-xl: 0 20px 40px rgba(15, 23, 42, 0.5);
+    
+    /* Bike Light Glowing Effects */
+    --glow-red: 0 0 20px rgba(220, 38, 38, 0.6);
+    --glow-orange: 0 0 20px rgba(234, 88, 12, 0.6);
+    --glow-green: 0 0 20px rgba(5, 150, 105, 0.6);
+    --glow-blue: 0 0 20px rgba(29, 78, 216, 0.6);
+    --glow-gold: 0 0 20px rgba(245, 158, 11, 0.6);
+}
+
+/* Enhanced Body Styling */
+body {
+    background: var(--bg-gradient-main);
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated Background Pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+    z-index: -1;
+    animation: backgroundShift 20s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(0.5deg); }
+    66% { transform: translate(-20px, 20px) rotate(-0.5deg); }
+}
+
+/* Enhanced Navigation Bar */
+.navbar {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: var(--shadow-lg);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: var(--transition-normal);
+}
+
+.navbar:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-1px);
+}
+
+.navbar-brand {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-shadow: none;
+    transition: var(--transition-normal);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(var(--glow-primary));
+}
+
+.nav-link {
+    position: relative;
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    transition: var(--transition-normal);
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px;
+    margin: 0 0.25rem;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-gradient);
+    transition: var(--transition-normal);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-link:hover::before {
+    width: 80%;
+}
+
+.nav-link.active {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    box-shadow: var(--glow-primary);
+}
+
+/* Enhanced Cards */
+.card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-normal);
+    overflow: hidden;
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-xl), var(--glow-primary);
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Enhanced Buttons */
+.btn {
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-normal);
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.875rem;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: var(--transition-fast);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--glow-primary);
+}
+
+.btn-success {
+    background: var(--success-gradient) !important;
+    border: none !important;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--glow-success);
+}
+
+.btn-warning {
+    background: var(--warning-gradient) !important;
+    border: none !important;
+}
+
+.btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--glow-warning);
+}
+
+.btn-danger {
+    background: var(--danger-gradient) !important;
+    border: none !important;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--glow-danger);
+}
+
+.btn-info {
+    background: var(--info-gradient) !important;
+    border: none !important;
+}
+
+.btn-outline-primary {
+    border: 2px solid transparent !important;
+    background: linear-gradient(var(--bg-gradient-card), var(--bg-gradient-card)) padding-box,
+                var(--primary-gradient) border-box;
+    color: white !important;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-gradient) !important;
+    transform: translateY(-2px);
+}
+
+/* Enhanced Form Elements */
+.form-control {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 12px !important;
+    color: white !important;
+    padding: 0.75rem 1rem;
+    transition: var(--transition-normal);
+    backdrop-filter: blur(10px);
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: var(--neon-blue) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25), var(--glow-primary) !important;
+    transform: translateY(-2px);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+/* Enhanced Tables */
+.table {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 12px !important;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.table thead th {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    position: relative;
+}
+
+.table tbody tr {
+    transition: var(--transition-fast);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.01);
+    box-shadow: var(--shadow-md);
+}
+
+.table tbody td {
+    border: none !important;
+    padding: 1rem;
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Enhanced Alerts */
+.alert {
+    border-radius: 12px !important;
+    border: none !important;
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.alert-success {
+    background: rgba(74, 172, 254, 0.2) !important;
+    color: #00f2fe !important;
+    box-shadow: var(--glow-success);
+}
+
+.alert-warning {
+    background: rgba(250, 217, 97, 0.2) !important;
+    color: #fad961 !important;
+    box-shadow: var(--glow-warning);
+}
+
+.alert-danger {
+    background: rgba(255, 107, 107, 0.2) !important;
+    color: #ff6b6b !important;
+    box-shadow: var(--glow-danger);
+}
+
+.alert-info {
+    background: rgba(116, 185, 255, 0.2) !important;
+    color: #74b9ff !important;
+}
+
+/* Enhanced Badges */
+.badge {
+    border-radius: 20px !important;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.badge-primary {
+    background: var(--primary-gradient) !important;
+}
+
+.badge-success {
+    background: var(--success-gradient) !important;
+}
+
+.badge-warning {
+    background: var(--warning-gradient) !important;
+}
+
+.badge-danger {
+    background: var(--danger-gradient) !important;
+}
+
+/* Dashboard Statistics Cards */
+.stat-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-normal);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: rotate 4s linear infinite;
+    z-index: -1;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-xl), var(--glow-primary);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-icon {
+    font-size: 3rem;
+    background: var(--secondary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(240, 147, 251, 0.5));
+}
+
+/* Progress Bars */
+.progress {
+    height: 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    background: var(--primary-gradient) !important;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progressShimmer 2s infinite;
+}
+
+@keyframes progressShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Loading Animations */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--neon-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: relative;
+}
+
+.loading-spinner::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--neon-pink);
+    border-radius: 50%;
+    animation: spin 2s linear infinite reverse;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Particle Effect Background */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--neon-blue);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.7;
+}
+
+.particle:nth-child(2n) {
+    background: var(--neon-pink);
+    animation-delay: -2s;
+}
+
+.particle:nth-child(3n) {
+    background: var(--neon-green);
+    animation-delay: -4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { transform: translateY(-100vh) rotate(180deg); }
+}
+
+/* Glassmorphism Modal */
+.modal-content {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--glass-shadow);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Neon Text Effects */
+.neon-text {
+    color: var(--neon-blue);
+    text-shadow: 
+        0 0 5px var(--neon-blue),
+        0 0 10px var(--neon-blue),
+        0 0 15px var(--neon-blue);
+    animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+    from { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue); }
+    to { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue); }
+}
+
+/* Bike Store Specific Animations */
+@keyframes wheelSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes gearTurn {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes chainMove {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes bikeLightBlink {
+    0%, 50% { opacity: 1; }
+    25%, 75% { opacity: 0.3; }
+}
+
+@keyframes speedometer {
+    0% { transform: rotate(-90deg); }
+    100% { transform: rotate(90deg); }
+}
+
+@keyframes tireRoll {
+    0% { transform: translateX(-100px) rotate(0deg); }
+    100% { transform: translateX(100px) rotate(360deg); }
+}
+
+/* Bike Store UI Components */
+.bike-wheel {
+    animation: wheelSpin var(--wheel-spin);
+    border-radius: 50%;
+    border: 3px solid var(--spoke-silver);
+}
+
+.bike-gear {
+    animation: gearTurn var(--gear-turn);
+    color: var(--gear-bronze);
+}
+
+.bike-chain {
+    animation: chainMove var(--chain-move);
+    background: var(--chain-dark);
+}
+
+.bike-light {
+    animation: bikeLightBlink 2s infinite;
+    box-shadow: var(--glow-red);
+}
+
+.speedometer-needle {
+    animation: speedometer 3s ease-in-out infinite alternate;
+    transform-origin: bottom center;
+}
+
+/* Bike Store Card Styling */
+.bike-card {
+    background: var(--bg-gradient-card);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.bike-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.bike-card:hover::before {
+    left: 100%;
+}
+
+.bike-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--shadow-xl), var(--glow-red);
+}
+
+/* Bike Store Buttons */
+.btn-bike-primary {
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-bike-primary::before {
+    content: '🏍️';
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left var(--transition-normal);
+}
+
+.btn-bike-primary:hover::before {
+    left: 10px;
+}
+
+.btn-bike-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--glow-red);
+    padding-left: 40px;
+}
+
+/* Bike Store Navigation */
+.navbar-bike {
+    background: var(--bg-gradient-dark);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--bike-red);
+    box-shadow: var(--shadow-md);
+}
+
+.navbar-bike .navbar-brand {
+    color: var(--bike-red) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-shadow: var(--glow-red);
+}
+
+.navbar-bike .nav-link {
+    color: var(--bike-chrome) !important;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.navbar-bike .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--bike-red);
+    transition: width var(--transition-normal);
+}
+
+.navbar-bike .nav-link:hover::after {
+    width: 100%;
+}
+
+.navbar-bike .nav-link:hover {
+    color: var(--bike-red) !important;
+    text-shadow: var(--glow-red);
+}
+
+/* Bike Store Tables */
+.table-bike {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.table-bike thead {
+    background: var(--primary-gradient);
+    color: white;
+}
+
+.table-bike tbody tr {
+    transition: all var(--transition-fast);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.table-bike tbody tr:hover {
+    background: rgba(220, 38, 38, 0.1);
+    transform: scale(1.01);
+}
+
+/* Bike Store Forms */
+.form-bike {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.form-bike .form-control {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid var(--glass-border);
+    color: white;
+    border-radius: 8px;
+    transition: all var(--transition-normal);
+}
+
+.form-bike .form-control:focus {
+    border-color: var(--bike-red);
+    box-shadow: var(--glow-red);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+/* Bike Store Status Indicators */
+.status-in-stock {
+    background: var(--success-gradient);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    animation: bikeLightBlink 3s infinite;
+}
+
+.status-low-stock {
+    background: var(--warning-gradient);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    animation: bikeLightBlink 1.5s infinite;
+}
+
+.status-out-of-stock {
+    background: var(--danger-gradient);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    animation: bikeLightBlink 1s infinite;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .stat-icon {
+        font-size: 2rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .bike-card {
+        margin-bottom: 1rem;
+    }
+    
+    .navbar-bike .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-bg: rgba(30, 41, 59, 0.4);
+        --glass-border: rgba(156, 163, 175, 0.3);
+    }
+}
+
+/* Bike Store Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .bike-wheel,
+    .bike-gear,
+    .bike-chain,
+    .bike-light,
+    .speedometer-needle {
+        animation: none;
+    }
+    
+    .bike-card::before {
+        display: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .card {
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    }
+    
+    .btn {
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

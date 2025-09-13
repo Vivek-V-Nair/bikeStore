@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ bike.brand }} {{ bike.model }} - Bike Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store:dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:bike_list' %}">Bikes</a></li>
+                <li class="breadcrumb-item active">{{ bike.brand }} {{ bike.model }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-bicycle me-2"></i>{{ bike.brand }} {{ bike.model }}
+                    </h4>
+                    <span class="badge bg-secondary text-light">{{ bike.type }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td class="fw-bold text-muted">Brand:</td>
+                                <td>{{ bike.brand }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Model:</td>
+                                <td>{{ bike.model }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Type:</td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ bike.type }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Color:</td>
+                                <td>
+                                    <span class="badge bg-info">{{ bike.color }}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td class="fw-bold text-muted">Price:</td>
+                                <td class="h5 text-success mb-0">₹{{ bike.price|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Stock:</td>
+                                <td>
+                                    {% if bike.stock_quantity == 0 %}
+                                        <span class="badge bg-danger">Out of Stock</span>
+                                    {% elif bike.stock_quantity < 5 %}
+                                        <span class="badge bg-warning">{{ bike.stock_quantity }} left</span>
+                                    {% else %}
+                                        <span class="badge bg-success">{{ bike.stock_quantity }} available</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Supplier:</td>
+                                <td>
+                                    {% if bike.supplier %}
+                                        <a href="{% url 'store:supplier_detail' bike.supplier.pk %}" class="btn btn-outline-primary btn-sm">
+                                            {{ bike.supplier.name }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Not assigned</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-muted">Added:</td>
+                                <td>{{ bike.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                {% if bike.description %}
+                    <div class="mb-4">
+                        <h6 class="text-muted">Description</h6>
+                        <p class="card-text">{{ bike.description }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{% url 'store:bike_update' bike.pk %}" class="btn btn-primary">
+                        <i class="fas fa-edit me-1"></i>Edit Bike
+                    </a>
+                    <a href="{% url 'store:sale_create' %}?bike={{ bike.pk }}" class="btn btn-success">
+                        <i class="fas fa-shopping-cart me-1"></i>Sell This Bike
+                    </a>
+                    <a href="{% url 'store:bike_delete' bike.pk %}" class="btn btn-danger delete-confirm">
+                        <i class="fas fa-trash me-1"></i>Delete Bike
+                    </a>
+                    <a href="{% url 'store:bike_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Stock Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-boxes me-1"></i>Stock Information
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <div class="display-4 fw-bold {% if bike.stock_quantity == 0 %}text-danger{% elif bike.stock_quantity < 5 %}text-warning{% else %}text-success{% endif %}">
+                        {{ bike.stock_quantity }}
+                    </div>
+                    <small class="text-muted">Units in stock</small>
+                </div>
+                
+                {% if bike.is_low_stock %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Low stock alert! Consider restocking soon.
+                    </div>
+                {% endif %}
+
+                {% if bike.inventory %}
+                    <div class="small text-muted">
+                        <div>Minimum stock: {{ bike.inventory.minimum_stock }}</div>
+                        <div>Reorder point: {{ bike.inventory.reorder_point }}</div>
+                        {% if bike.inventory.last_restocked %}
+                            <div>Last restocked: {{ bike.inventory.last_restocked|date:"M d, Y" }}</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sales History -->
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-history me-1"></i>Recent Sales
+                </h6>
+            </div>
+            <div class="card-body">
+                {% if recent_sales %}
+                    <div class="list-group list-group-flush">
+                        {% for sale in recent_sales %}
+                            <div class="list-group-item px-0">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="me-auto">
+                                        <div class="fw-bold">{{ sale.customer.name }}</div>
+                                        <small class="text-muted">{{ sale.sale_date|date:"M d, Y" }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold">{{ sale.quantity }}x</div>
+                                        <small class="text-success">₹{{ sale.total_amount|floatformat:2 }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-3">
+                        <a href="{% url 'store:sale_list' %}?bike={{ bike.pk }}" class="btn btn-outline-primary btn-sm w-100">
+                            View All Sales
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="text-center py-3">
+                        <i class="fas fa-shopping-cart fa-2x text-muted mb-2"></i>
+                        <p class="text-muted mb-0">No sales yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sales Statistics -->
+        {% if total_sold > 0 %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-line me-1"></i>Sales Statistics
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <div class="h4 text-primary mb-0">{{ total_sold }}</div>
+                            <small class="text-muted">Total Sold</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="h4 text-success mb-0">₹{% widthratio recent_sales|length total_sold bike.price %}</div>
+                            <small class="text-muted">Revenue</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Related Bikes -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-bicycle me-1"></i>Similar Bikes
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for similar_bike in similar_bikes %}
+                        <div class="col-md-3 mb-3">
+                            <div class="card border-light">
+                                <div class="card-body p-3">
+                                    <h6 class="card-title">{{ similar_bike.brand }} {{ similar_bike.model }}</h6>
+                                    <p class="card-text">
+                                        <small class="text-muted">{{ similar_bike.type }} • {{ similar_bike.color }}</small><br>
+                                        <span class="fw-bold text-success">₹{{ similar_bike.price|floatformat:2 }}</span>
+                                    </p>
+                                    <a href="{% url 'store:bike_detail' similar_bike.pk %}" class="btn btn-outline-primary btn-sm">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-12">
+                            <p class="text-muted text-center">No similar bikes found</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.display-4 {
+    font-size: 2.5rem;
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+</style>
+{% endblock %}

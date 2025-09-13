@@ -1,0 +1,694 @@
+/* Dark Mode Styles for Bike Store Management System */
+
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #343a40;
+    --dark-color: #212529;
+    --darker-color: #1a1d20;
+    --border-color: #495057;
+    --text-light: #e9ecef;
+    --text-muted: #adb5bd;
+}
+
+/* General Dark Mode Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--dark-color) !important;
+    color: var(--text-light) !important;
+}
+
+/* Card Styles */
+.card {
+    background-color: var(--light-color) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+    transition: box-shadow 0.15s ease-in-out;
+    color: var(--text-light) !important;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+    background-color: var(--darker-color) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    font-weight: 600;
+    color: var(--text-light) !important;
+}
+
+.card-body {
+    background-color: var(--light-color) !important;
+    color: var(--text-light) !important;
+}
+
+/* Table Styles */
+.table {
+    color: var(--text-light) !important;
+}
+
+.table-light {
+    background-color: var(--darker-color) !important;
+    color: var(--text-light) !important;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--darker-color) !important;
+}
+
+/* Form Styles */
+.form-control {
+    background-color: var(--darker-color) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-light) !important;
+}
+
+.form-control:focus {
+    background-color: var(--darker-color) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--text-light) !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-select {
+    background-color: var(--darker-color) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-light) !important;
+}
+
+.form-select:focus {
+    background-color: var(--darker-color) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--text-light) !important;
+}
+
+.form-label {
+    color: var(--text-light) !important;
+}
+
+.form-text {
+    color: var(--text-muted) !important;
+}
+
+/* Input Group Styles */
+.input-group-text {
+    background-color: var(--darker-color) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-light) !important;
+}
+
+/* Alert Styles */
+.alert {
+    border: 1px solid var(--border-color);
+}
+
+.alert-info {
+    background-color: rgba(13, 202, 240, 0.1) !important;
+    border-color: var(--info-color) !important;
+    color: var(--info-color) !important;
+}
+
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+    border-color: var(--warning-color) !important;
+    color: var(--warning-color) !important;
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    border-color: var(--danger-color) !important;
+    color: var(--danger-color) !important;
+}
+
+.alert-success {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+    border-color: var(--success-color) !important;
+    color: var(--success-color) !important;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.15s ease-in-out;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Breadcrumb Styles */
+.breadcrumb {
+    background-color: var(--darker-color) !important;
+    border: 1px solid var(--border-color);
+}
+
+.breadcrumb-item a {
+    color: var(--primary-color) !important;
+}
+
+.breadcrumb-item.active {
+    color: var(--text-muted) !important;
+}
+
+/* Button Styles */
+.btn-outline-primary {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-outline-secondary {
+    border-color: var(--secondary-color) !important;
+    color: var(--secondary-color) !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+}
+
+.btn-outline-success {
+    border-color: var(--success-color) !important;
+    color: var(--success-color) !important;
+}
+
+.btn-outline-success:hover {
+    background-color: var(--success-color) !important;
+    border-color: var(--success-color) !important;
+}
+
+.btn-outline-info {
+    border-color: var(--info-color) !important;
+    color: var(--info-color) !important;
+}
+
+.btn-outline-info:hover {
+    background-color: var(--info-color) !important;
+    border-color: var(--info-color) !important;
+}
+
+.btn-outline-warning {
+    border-color: var(--warning-color) !important;
+    color: var(--warning-color) !important;
+}
+
+.btn-outline-warning:hover {
+    background-color: var(--warning-color) !important;
+    border-color: var(--warning-color) !important;
+    color: var(--dark-color) !important;
+}
+
+.btn-outline-danger {
+    border-color: var(--danger-color) !important;
+    color: var(--danger-color) !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--danger-color) !important;
+    border-color: var(--danger-color) !important;
+}
+
+/* Text Styles */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.text-light {
+    color: var(--text-light) !important;
+}
+
+/* Border Styles */
+.border-bottom {
+    border-bottom-color: var(--border-color) !important;
+}
+
+.border-top {
+    border-top-color: var(--border-color) !important;
+}
+
+.border {
+    border-color: var(--border-color) !important;
+}
+
+/* Modal Styles */
+.modal-content {
+    background-color: var(--light-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.modal-header {
+    background-color: var(--darker-color) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.modal-footer {
+    background-color: var(--darker-color) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+/* Pagination Styles */
+.page-link {
+    background-color: var(--light-color) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.page-link:hover {
+    background-color: var(--darker-color) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    background-color: var(--light-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.dropdown-item {
+    color: var(--text-light) !important;
+}
+
+.dropdown-item:hover {
+    background-color: var(--darker-color) !important;
+    color: var(--text-light) !important;
+}
+
+.dropdown-divider {
+    border-top-color: var(--border-color) !important;
+}
+
+/* Dashboard Cards */
+.bg-rgba-white-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Tables */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    color: var(--dark-color);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.025);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-1px);
+}
+
+/* Forms */
+.form-control {
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    font-size: 0.75em;
+}
+
+/* Charts */
+#salesChart {
+    max-height: 300px;
+}
+
+/* Search Forms */
+.search-form {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: var(--primary-color);
+    border-color: #dee2e6;
+}
+
+.pagination .page-link:hover {
+    color: #0b5ed7;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Alerts */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d1eddb;
+    color: #0f5132;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #055160;
+}
+
+/* Low Stock Alerts */
+.low-stock-item {
+    border-left: 4px solid var(--warning-color);
+    background-color: #fff3cd;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Stats Cards */
+.stats-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Action Buttons */
+.action-buttons .btn {
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-group-vertical .btn {
+        margin-bottom: 0.25rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .stats-card h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-header h5 {
+        font-size: 1rem;
+    }
+    
+    .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Dark mode compatibility */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background-color: #1a1a1a;
+        color: #e9ecef;
+    }
+    
+    .table {
+        color: #e9ecef;
+    }
+    
+    .form-control {
+        background-color: #2d2d2d;
+        border-color: #495057;
+        color: #e9ecef;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .btn,
+    .pagination,
+    footer {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+    }
+    
+    .main-content {
+        margin-top: 0 !important;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Custom Utilities */
+.text-primary-dark {
+    color: #0b5ed7 !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%) !important;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #198754 0%, #157347 100%) !important;
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #0dcaf0 0%, #31d2f2 100%) !important;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%) !important;
+}
+
+.border-start-primary {
+    border-left: 3px solid var(--primary-color) !important;
+}
+
+.border-start-success {
+    border-left: 3px solid var(--success-color) !important;
+}
+
+.border-start-warning {
+    border-left: 3px solid var(--warning-color) !important;
+}
+
+.border-start-info {
+    border-left: 3px solid var(--info-color) !important;
+}
+
+/* Additional Dark Mode Specific Styles */
+
+/* Override any remaining light mode styles */
+.bg-light {
+    background-color: var(--light-color) !important;
+}
+
+.bg-white {
+    background-color: var(--light-color) !important;
+}
+
+/* Chart container background */
+canvas {
+    background-color: transparent !important;
+}
+
+/* Timeline styles for dark mode */
+.timeline-content {
+    background: var(--darker-color) !important;
+    border-left-color: var(--primary-color) !important;
+    color: var(--text-light) !important;
+}
+
+/* Badge dark mode styles */
+.badge {
+    color: white !important;
+}
+
+/* List group styles */
+.list-group-item {
+    background-color: var(--light-color) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-light) !important;
+}
+
+.list-group-item:hover {
+    background-color: var(--darker-color) !important;
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Fix for any remaining text that might be dark */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-light) !important;
+}
+
+p {
+    color: var(--text-light) !important;
+}
+
+/* Table header fix for dark mode */
+.table th {
+    color: var(--text-light) !important;
+    background-color: var(--darker-color) !important;
+}
+
+/* Fix for small text */
+small, .small {
+    color: var(--text-muted) !important;
+}
+
+/* Loading and disabled states */
+.btn:disabled {
+    opacity: 0.65;
+}
+
+/* Focus states for accessibility */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Print styles (remain light for better printing) */
+@media print {
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    .card {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    .table {
+        color: black !important;
+    }
+}

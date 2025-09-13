@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if object %}Edit {{ object.name }}{% else %}Add New Supplier{% endif %} - Bike Store{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store:dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:supplier_list' %}">Suppliers</a></li>
+                {% if object %}
+                    <li class="breadcrumb-item"><a href="{% url 'store:supplier_detail' object.pk %}">{{ object.name }}</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
+                {% else %}
+                    <li class="breadcrumb-item active">Add New Supplier</li>
+                {% endif %}
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-truck me-2"></i>
+                    {% if object %}
+                        Edit Supplier: {{ object.name }}
+                    {% else %}
+                        Add New Supplier
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-building me-1"></i>Company Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.name.id_for_label }}" class="form-label">
+                                        Company Name <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.name.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Full legal name of the supplier company</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-address-book me-1"></i>Contact Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                                        Email Address <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        {{ form.email }}
+                                    </div>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.email.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Primary contact email for orders and inquiries</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                        Phone Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-phone"></i>
+                                        </span>
+                                        {{ form.phone }}
+                                    </div>
+                                    {% if form.phone.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.phone.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Contact phone number for urgent matters</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.website.id_for_label }}" class="form-label">
+                                        Website URL
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-globe"></i>
+                                        </span>
+                                        {{ form.website }}
+                                    </div>
+                                    {% if form.website.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.website.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Company website or online catalog (include http:// or https://)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-map-marker-alt me-1"></i>Address Information
+                        </h6>
+                        <div class="mb-3">
+                            <label for="{{ form.address.id_for_label }}" class="form-label">
+                                Business Address
+                            </label>
+                            {{ form.address }}
+                            {% if form.address.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.address.errors.0 }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Complete business address for delivery and correspondence</div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{% if object %}{% url 'store:supplier_detail' object.pk %}{% else %}{% url 'store:supplier_list' %}{% endif %}" 
+                           class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>
+                            {% if object %}Update Supplier{% else %}Add Supplier{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Help Card -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-dark border-bottom border-secondary">
+                <h6 class="mb-0 text-light">
+                    <i class="fas fa-question-circle me-1"></i>Supplier Information Tips
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Required Information:</strong>
+                    <ul class="small mt-2">
+                        <li><strong>Company Name:</strong> Full legal business name</li>
+                        <li><strong>Email:</strong> Primary business contact email</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Optional Information:</strong>
+                    <ul class="small mt-2">
+                        <li><strong>Phone:</strong> For urgent communication</li>
+                        <li><strong>Website:</strong> Company website or catalog</li>
+                        <li><strong>Address:</strong> For shipping and correspondence</li>
+                    </ul>
+                </div>
+                
+                <div class="alert alert-info">
+                    <small>
+                        <i class="fas fa-lightbulb me-1"></i>
+                        <strong>Tip:</strong> Complete supplier information helps in better communication and order management.
+                    </small>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <small>
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <strong>Note:</strong> Email addresses must be unique in the system.
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions Card -->
+        {% if object %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightning-bolt me-1"></i>Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'store:supplier_detail' object.pk %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>View Supplier Details
+                        </a>
+                        <a href="{% url 'store:bike_create' %}?supplier={{ object.pk }}" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-bicycle me-1"></i>Add New Bike
+                        </a>
+                        <a href="mailto:{{ object.email }}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-envelope me-1"></i>Send Email
+                        </a>
+                        {% if object.phone %}
+                            <a href="tel:{{ object.phone }}" class="btn btn-outline-warning btn-sm">
+                                <i class="fas fa-phone me-1"></i>Call Supplier
+                            </a>
+                        {% endif %}
+                        {% if object.website %}
+                            <a href="{{ object.website }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-globe me-1"></i>Visit Website
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Supplier Guidelines -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle me-1"></i>Supplier Guidelines
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Best Practices:</strong>
+                    <ul class="small mt-2">
+                        <li>Maintain updated contact information</li>
+                        <li>Regular communication for inventory updates</li>
+                        <li>Document all agreements and terms</li>
+                        <li>Track performance metrics</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Contact Verification:</strong>
+                    <ul class="small mt-2">
+                        <li>Verify email addresses before saving</li>
+                        <li>Test phone numbers for accuracy</li>
+                        <li>Check website links are working</li>
+                        <li>Confirm physical address if needed</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Form validation
+    $('form').on('submit', function(e) {
+        let isValid = true;
+        
+        // Check required fields
+        $(this).find('input[required], select[required]').each(function() {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid');
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        
+        // Email validation
+        const email = $('#id_email').val();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email && !emailRegex.test(email)) {
+            $('#id_email').addClass('is-invalid');
+            isValid = false;
+        }
+        
+        // Website URL validation
+        const website = $('#id_website').val();
+        if (website) {
+            const urlRegex = /^https?:\/\/.+\..+/;
+            if (!urlRegex.test(website)) {
+                $('#id_website').addClass('is-invalid');
+                isValid = false;
+            }
+        }
+        
+        // Phone validation (if provided)
+        const phone = $('#id_phone').val();
+        if (phone) {
+            const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+            if (!phoneRegex.test(phone)) {
+                $('#id_phone').addClass('is-invalid');
+                isValid = false;
+            }
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
+    
+    // Remove validation classes on input
+    $('input, select, textarea').on('input change', function() {
+        $(this).removeClass('is-invalid');
+    });
+    
+    // Auto-format website URL
+    $('#id_website').on('blur', function() {
+        let url = $(this).val();
+        if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+            $(this).val('https://' + url);
+        }
+    });
+    
+    // Format phone number as user types
+    $('#id_phone').on('input', function() {
+        let value = $(this).val().replace(/\D/g, '');
+        if (value.length >= 10) {
+            const formatted = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            $(this).val(formatted);
+        }
+    });
+    
+    // Auto-capitalize company name
+    $('#id_name').on('input', function() {
+        const words = $(this).val().split(' ');
+        const capitalizedWords = words.map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        );
+        $(this).val(capitalizedWords.join(' '));
+    });
+});
+</script>
+{% endblock %}

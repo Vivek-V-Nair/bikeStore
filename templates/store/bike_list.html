@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bikes - Bike Store Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-bicycle me-2 text-primary"></i>Bike Inventory
+            </h1>
+            <a href="{% url 'store:bike_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i>Add New Bike
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter Form -->
+<div class="card search-form mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-4">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" class="form-control" name="search" value="{{ request.GET.search }}" 
+                       placeholder="Search by brand, model, or type...">
+            </div>
+            <div class="col-md-2">
+                <label for="type" class="form-label">Type</label>
+                <select name="type" class="form-select">
+                    <option value="">All Types</option>
+                    {% for type_choice in search_form.fields.type.choices %}
+                        {% if type_choice.0 %}
+                            <option value="{{ type_choice.0 }}" {% if request.GET.type == type_choice.0 %}selected{% endif %}>
+                                {{ type_choice.1 }}
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="min_price" class="form-label">Min Price</label>
+                <input type="number" class="form-control" name="min_price" value="{{ request.GET.min_price }}" 
+                       placeholder="₹0" step="0.01">
+            </div>
+            <div class="col-md-2">
+                <label for="max_price" class="form-label">Max Price</label>
+                <input type="number" class="form-control" name="max_price" value="{{ request.GET.max_price }}" 
+                       placeholder="₹999999" step="0.01">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="fas fa-search me-1"></i>Search
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="mt-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="in_stock_only" value="true" 
+                       {% if request.GET.in_stock_only %}checked{% endif %} onchange="this.form.submit()">
+                <label class="form-check-label">
+                    Show only bikes in stock
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bikes Grid -->
+{% if bikes %}
+    <div class="row">
+        {% for bike in bikes %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 bike-card">
+                    <div class="card-header bg-dark border-bottom border-secondary d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 text-light">{{ bike.brand }} {{ bike.model }}</h6>
+                        <span class="badge bg-secondary">{{ bike.type }}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small class="text-muted">Color</small>
+                                <div class="fw-bold">{{ bike.color }}</div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Price</small>
+                                <div class="fw-bold text-success">₹{{ bike.price|floatformat:2 }}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small class="text-muted">Stock</small>
+                                <div class="fw-bold">
+                                    {% if bike.stock_quantity == 0 %}
+                                        <span class="text-danger">Out of Stock</span>
+                                    {% elif bike.stock_quantity < 5 %}
+                                        <span class="text-warning">{{ bike.stock_quantity }} left</span>
+                                    {% else %}
+                                        <span class="text-success">{{ bike.stock_quantity }} available</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Supplier</small>
+                                <div class="fw-bold">
+                                    {% if bike.supplier %}
+                                        <a href="{% url 'store:supplier_detail' bike.supplier.pk %}" class="text-decoration-none">
+                                            {{ bike.supplier.name }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if bike.description %}
+                            <p class="card-text text-muted small">{{ bike.description|truncatewords:15 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-dark border-top border-secondary">
+                        <div class="btn-group w-100" role="group">
+                            <a href="{% url 'store:bike_detail' bike.pk %}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i>View
+                            </a>
+                            <a href="{% url 'store:bike_update' bike.pk %}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a href="{% url 'store:bike_delete' bike.pk %}" class="btn btn-outline-danger btn-sm delete-confirm">
+                                <i class="fas fa-trash me-1"></i>Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+        <nav aria-label="Bikes pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.paginator.num_pages }}">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+{% else %}
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="fas fa-bicycle fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">No bikes found</h4>
+            <p class="text-muted mb-4">
+                {% if request.GET.search or request.GET.type or request.GET.min_price or request.GET.max_price %}
+                    Try adjusting your search criteria.
+                {% else %}
+                    Start by adding your first bike to the inventory.
+                {% endif %}
+            </p>
+            <a href="{% url 'store:bike_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i>Add First Bike
+            </a>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Summary Stats -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <h5 class="text-primary">{{ bikes|length }}</h5>
+                        <small class="text-muted">Bikes on this page</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h5 class="text-success">{% if page_obj %}{{ page_obj.paginator.count }}{% else %}{{ bikes|length }}{% endif %}</h5>
+                        <small class="text-muted">Total bikes</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h5 class="text-info">{{ bikes|length }}</h5>
+                        <small class="text-muted">Different models</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h5 class="text-warning">{{ bikes|length }}</h5>
+                        <small class="text-muted">Brands available</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.bike-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.bike-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.search-form {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+</style>
+{% endblock %}

@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if object %}Edit {{ object.name }}{% else %}Add New Customer{% endif %} - Bike Store{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store:dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:customer_list' %}">Customers</a></li>
+                {% if object %}
+                    <li class="breadcrumb-item"><a href="{% url 'store:customer_detail' object.pk %}">{{ object.name }}</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
+                {% else %}
+                    <li class="breadcrumb-item active">Add New Customer</li>
+                {% endif %}
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-user me-2"></i>
+                    {% if object %}
+                        Edit Customer: {{ object.name }}
+                    {% else %}
+                        Add New Customer
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-user-circle me-1"></i>Personal Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="{{ form.name.id_for_label }}" class="form-label">
+                                        Full Name <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.name.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-address-book me-1"></i>Contact Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                                        Email Address <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        {{ form.email }}
+                                    </div>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.email.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">We'll use this for order confirmations and updates</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                        Phone Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-phone"></i>
+                                        </span>
+                                        {{ form.phone }}
+                                    </div>
+                                    {% if form.phone.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.phone.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Optional - for delivery coordination</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-map-marker-alt me-1"></i>Address Information
+                        </h6>
+                        <div class="mb-3">
+                            <label for="{{ form.address.id_for_label }}" class="form-label">
+                                Address
+                            </label>
+                            {{ form.address }}
+                            {% if form.address.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.address.errors.0 }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Complete address for delivery purposes</div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{% if object %}{% url 'store:customer_detail' object.pk %}{% else %}{% url 'store:customer_list' %}{% endif %}" 
+                           class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>
+                            {% if object %}Update Customer{% else %}Add Customer{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Help Card -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-dark border-bottom border-secondary">
+                <h6 class="mb-0 text-light">
+                    <i class="fas fa-question-circle me-1"></i>Customer Information Tips
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Required Information:</strong>
+                    <ul class="small mt-2">
+                        <li><strong>Name:</strong> Customer's full name for records</li>
+                        <li><strong>Email:</strong> Primary contact method</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Optional Information:</strong>
+                    <ul class="small mt-2">
+                        <li><strong>Phone:</strong> For delivery coordination</li>
+                        <li><strong>Address:</strong> For bike delivery/pickup</li>
+                    </ul>
+                </div>
+                
+                <div class="alert alert-info">
+                    <small>
+                        <i class="fas fa-shield-alt me-1"></i>
+                        <strong>Privacy:</strong> Customer information is kept secure and only used for business purposes.
+                    </small>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <small>
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <strong>Note:</strong> Email addresses must be unique in the system.
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions Card -->
+        {% if object %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightning-bolt me-1"></i>Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'store:customer_detail' object.pk %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>View Customer Details
+                        </a>
+                        <a href="{% url 'store:sale_create' %}?customer={{ object.pk }}" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-shopping-cart me-1"></i>Create New Sale
+                        </a>
+                        <a href="mailto:{{ object.email }}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-envelope me-1"></i>Send Email
+                        </a>
+                        {% if object.phone %}
+                            <a href="tel:{{ object.phone }}" class="btn btn-outline-warning btn-sm">
+                                <i class="fas fa-phone me-1"></i>Call Customer
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Form validation
+    $('form').on('submit', function(e) {
+        let isValid = true;
+        
+        // Check required fields
+        $(this).find('input[required], select[required]').each(function() {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid');
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        
+        // Email validation
+        const email = $('#id_email').val();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email && !emailRegex.test(email)) {
+            $('#id_email').addClass('is-invalid');
+            isValid = false;
+        }
+        
+        // Phone validation (if provided)
+        const phone = $('#id_phone').val();
+        if (phone) {
+            // Basic phone validation - should contain only numbers, spaces, hyphens, parentheses, and plus
+            const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+            if (!phoneRegex.test(phone)) {
+                $('#id_phone').addClass('is-invalid');
+                isValid = false;
+            }
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
+    
+    // Remove validation classes on input
+    $('input, select, textarea').on('input change', function() {
+        $(this).removeClass('is-invalid');
+    });
+    
+    // Format phone number as user types
+    $('#id_phone').on('input', function() {
+        let value = $(this).val().replace(/\D/g, '');
+        if (value.length >= 10) {
+            // Format as (XXX) XXX-XXXX for 10+ digits
+            const formatted = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            $(this).val(formatted);
+        }
+    });
+    
+    // Auto-capitalize name
+    $('#id_name').on('input', function() {
+        const words = $(this).val().split(' ');
+        const capitalizedWords = words.map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        );
+        $(this).val(capitalizedWords.join(' '));
+    });
+});
+</script>
+{% endblock %}

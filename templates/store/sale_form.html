@@ -1,0 +1,453 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if object %}Edit Sale #{{ object.pk }}{% else %}Record New Sale{% endif %} - Bike Store{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'store:dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:sale_list' %}">Sales</a></li>
+                {% if object %}
+                    <li class="breadcrumb-item"><a href="{% url 'store:sale_detail' object.pk %}">Sale #{{ object.pk }}</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
+                {% else %}
+                    <li class="breadcrumb-item active">Record New Sale</li>
+                {% endif %}
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    {% if object %}
+                        Edit Sale #{{ object.pk }}
+                    {% else %}
+                        Record New Sale
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate id="saleForm">
+                    {% csrf_token %}
+                    
+                    <!-- Customer Selection Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-user me-1"></i>Customer Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="{{ form.customer.id_for_label }}" class="form-label">
+                                        Customer <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.customer }}
+                                    {% if form.customer.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.customer.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Select an existing customer or create a new one</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <a href="{% url 'store:customer_create' %}" 
+                                   class="btn btn-outline-success mb-3" target="_blank">
+                                    <i class="fas fa-plus me-1"></i>New Customer
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Customer Quick Info -->
+                        <div id="customerInfo" class="alert alert-info d-none">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <strong>Email:</strong>
+                                    <span id="customerEmail">-</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Phone:</strong>
+                                    <span id="customerPhone">-</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Previous Purchases:</strong>
+                                    <span id="customerPurchases">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bike Selection Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-bicycle me-1"></i>Bike Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="{{ form.bike.id_for_label }}" class="form-label">
+                                        Bike <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.bike }}
+                                    {% if form.bike.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.bike.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Select the bike being sold</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <a href="{% url 'store:bike_create' %}" 
+                                   class="btn btn-outline-success mb-3" target="_blank">
+                                    <i class="fas fa-plus me-1"></i>New Bike
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Bike Quick Info -->
+                        <div id="bikeInfo" class="alert alert-warning d-none">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <strong>Price:</strong>
+                                    <span id="bikePrice">₹0</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Stock:</strong>
+                                    <span id="bikeStock">0</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Type:</strong>
+                                    <span id="bikeType">-</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Color:</strong>
+                                    <span id="bikeColor">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sale Details Section -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2 mb-3">
+                            <i class="fas fa-receipt me-1"></i>Sale Details
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.quantity.id_for_label }}" class="form-label">
+                                        Quantity <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.quantity }}
+                                    {% if form.quantity.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.quantity.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Number of bikes being sold</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.sale_date.id_for_label }}" class="form-label">
+                                        Sale Date <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.sale_date }}
+                                    {% if form.sale_date.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.sale_date.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Date of the sale</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Calculation -->
+                    <div class="mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fas fa-calculator me-1"></i>Sale Summary
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="text-center">
+                                            <label class="text-muted small">Unit Price</label>
+                                            <h5 id="unitPrice" class="text-primary">₹0</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center">
+                                            <label class="text-muted small">Quantity</label>
+                                            <h5 id="displayQuantity" class="text-info">0</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center">
+                                            <label class="text-muted small">Total Amount</label>
+                                            <h4 id="totalAmount" class="text-success">₹0</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stock Warning -->
+                    <div id="stockWarning" class="alert alert-danger d-none">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <strong>Warning:</strong> The requested quantity exceeds available stock!
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{% if object %}{% url 'store:sale_detail' object.pk %}{% else %}{% url 'store:sale_list' %}{% endif %}" 
+                           class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-save me-1"></i>
+                            {% if object %}Update Sale{% else %}Record Sale{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Help Card -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-dark border-bottom border-secondary">
+                <h6 class="mb-0 text-light">
+                    <i class="fas fa-question-circle me-1"></i>Sale Recording Tips
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Required Information:</strong>
+                    <ul class="small mt-2">
+                        <li><strong>Customer:</strong> Must select existing customer</li>
+                        <li><strong>Bike:</strong> Must select available bike</li>
+                        <li><strong>Quantity:</strong> Number of units sold</li>
+                        <li><strong>Date:</strong> When the sale occurred</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Stock Management:</strong>
+                    <ul class="small mt-2">
+                        <li>Stock is automatically reduced after sale</li>
+                        <li>Cannot sell more than available stock</li>
+                        <li>Stock warnings appear when low</li>
+                    </ul>
+                </div>
+                
+                <div class="alert alert-info">
+                    <small>
+                        <i class="fas fa-lightbulb me-1"></i>
+                        <strong>Tip:</strong> Total amount is calculated automatically based on bike price and quantity.
+                    </small>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <small>
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <strong>Note:</strong> Make sure the sale date is accurate for proper reporting.
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Sales -->
+        {% if recent_sales %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-clock me-1"></i>Recent Sales
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for sale in recent_sales %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <a href="{% url 'store:sale_detail' sale.pk %}" 
+                                   class="text-decoration-none small">
+                                    {{ sale.customer.name }}
+                                </a>
+                                <br>
+                                <small class="text-muted">{{ sale.bike.brand }} {{ sale.bike.model }}</small>
+                            </div>
+                            <span class="small fw-medium">₹{{ sale.total_amount|floatformat:0 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    let bikeData = {};
+    let customerData = {};
+    
+    // Load bike and customer data via AJAX
+    loadBikeData();
+    loadCustomerData();
+    
+    // Set default date to today
+    if (!$('#id_sale_date').val()) {
+        $('#id_sale_date').val(new Date().toISOString().split('T')[0]);
+    }
+    
+    // Customer selection change
+    $('#id_customer').on('change', function() {
+        const customerId = $(this).val();
+        if (customerId && customerData[customerId]) {
+            const customer = customerData[customerId];
+            $('#customerEmail').text(customer.email);
+            $('#customerPhone').text(customer.phone || 'Not provided');
+            $('#customerPurchases').text(customer.purchase_count);
+            $('#customerInfo').removeClass('d-none');
+        } else {
+            $('#customerInfo').addClass('d-none');
+        }
+    });
+    
+    // Bike selection change
+    $('#id_bike').on('change', function() {
+        const bikeId = $(this).val();
+        if (bikeId && bikeData[bikeId]) {
+            const bike = bikeData[bikeId];
+            $('#bikePrice').text('₹' + bike.price);
+            $('#bikeStock').text(bike.stock + ' units');
+            $('#bikeType').text(bike.type);
+            $('#bikeColor').text(bike.color);
+            $('#bikeInfo').removeClass('d-none');
+            
+            // Update price display
+            $('#unitPrice').text('₹' + bike.price);
+            updateTotal();
+        } else {
+            $('#bikeInfo').addClass('d-none');
+            $('#unitPrice').text('₹0');
+            updateTotal();
+        }
+    });
+    
+    // Quantity change
+    $('#id_quantity').on('input', function() {
+        updateTotal();
+        checkStock();
+    });
+    
+    // Form validation
+    $('#saleForm').on('submit', function(e) {
+        let isValid = true;
+        
+        // Check required fields
+        $(this).find('input[required], select[required]').each(function() {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid');
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        
+        // Check stock
+        const bikeId = $('#id_bike').val();
+        const quantity = parseInt($('#id_quantity').val());
+        if (bikeId && bikeData[bikeId] && quantity > bikeData[bikeId].stock) {
+            alert('Cannot sell more bikes than available in stock!');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
+    
+    // Remove validation classes on input
+    $('input, select').on('input change', function() {
+        $(this).removeClass('is-invalid');
+    });
+    
+    // Trigger change events for pre-selected values
+    $('#id_customer').trigger('change');
+    $('#id_bike').trigger('change');
+    
+    function updateTotal() {
+        const bikeId = $('#id_bike').val();
+        const quantity = parseInt($('#id_quantity').val()) || 0;
+        
+        if (bikeId && bikeData[bikeId]) {
+            const total = bikeData[bikeId].price * quantity;
+            $('#totalAmount').text('₹' + total.toLocaleString());
+            $('#displayQuantity').text(quantity);
+        } else {
+            $('#totalAmount').text('₹0');
+            $('#displayQuantity').text('0');
+        }
+    }
+    
+    function checkStock() {
+        const bikeId = $('#id_bike').val();
+        const quantity = parseInt($('#id_quantity').val()) || 0;
+        
+        if (bikeId && bikeData[bikeId] && quantity > bikeData[bikeId].stock) {
+            $('#stockWarning').removeClass('d-none');
+            $('#submitBtn').prop('disabled', true);
+        } else {
+            $('#stockWarning').addClass('d-none');
+            $('#submitBtn').prop('disabled', false);
+        }
+    }
+    
+    function loadBikeData() {
+        // In a real application, this would be an AJAX call
+        // For now, populate from form options
+        $('#id_bike option').each(function() {
+            if ($(this).val()) {
+                const text = $(this).text();
+                // Extract data from option text or make AJAX call
+                bikeData[$(this).val()] = {
+                    price: 25000, // Default price
+                    stock: 5,     // Default stock
+                    type: 'Mountain',
+                    color: 'Red'
+                };
+            }
+        });
+    }
+    
+    function loadCustomerData() {
+        // In a real application, this would be an AJAX call
+        $('#id_customer option').each(function() {
+            if ($(this).val()) {
+                customerData[$(this).val()] = {
+                    email: 'customer@example.com',
+                    phone: '+91 9876543210',
+                    purchase_count: 0
+                };
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
